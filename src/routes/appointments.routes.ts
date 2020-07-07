@@ -5,7 +5,12 @@ import { getCustomRepository } from 'typeorm';
 import AppointmentRepository from '../repositories/appointment.repository';
 import CreateAppointmentService from '../services/CreateAppoinmentService';
 
+import ensureAuthenticated from '../middleware/ensureAuthenticated';
+
 const appointmentsRouter = Router();
+
+// ensure the user is authenticated when calling the appointment routes
+appointmentsRouter.use(ensureAuthenticated);
 
 // addes async methods to the routes to be able to use await for the database
 appointmentsRouter.get('/', async (req, res) => {
