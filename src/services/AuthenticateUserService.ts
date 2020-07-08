@@ -6,6 +6,8 @@ import authConfig from '../config/auth';
 
 import User from '../models/user.model';
 
+import AppError from '../errors/AppError';
+
 interface RequestDTO {
   email: string;
   password: string;
@@ -29,7 +31,7 @@ class AuthenticateUserService {
     });
 
     if (!user) {
-      throw new Error('Incorrect email or password');
+      throw new AppError('Incorrect email or password', 401);
     }
 
     // user.password --> hashed password.
@@ -38,7 +40,7 @@ class AuthenticateUserService {
     const passwordMatched = await compare(password, user.password);
 
     if (!passwordMatched) {
-      throw new Error('Incorrect email or password');
+      throw new AppError('Incorrect email or password', 401);
     }
 
     const { secret, expiration } = authConfig.jtw;
