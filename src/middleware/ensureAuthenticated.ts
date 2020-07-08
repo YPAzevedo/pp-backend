@@ -23,8 +23,9 @@ const ensureAuthenticated = (
   const [, token] = authorization.split(' ');
 
   try {
+    // try to verify and decode the token, it returns the token payload you encrypted.
     const decodedToken = verify(token, authConfig.jtw.secret);
-
+    // get the subject from the token AKA the users id.
     const { sub } = decodedToken as TokenPayload;
 
     // setting the user on the request for all subsequent middlewares after this one.
